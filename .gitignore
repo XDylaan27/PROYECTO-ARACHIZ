@@ -1,0 +1,24 @@
+# Dependencias
+node_modules/
+**/node_modules/
+
+# Variables de entorno (Contraseñas)
+.env
+.env.local
+.env.development.local
+
+# Archivos generados por Build (React)
+dist/
+build/
+
+# Logs
+npm-debug.log*
+*.log
+
+# Sistema Operativo
+.DS_Store
+Thumbs.db
+
+# Editor de código
+.vscode/
+.idea/
