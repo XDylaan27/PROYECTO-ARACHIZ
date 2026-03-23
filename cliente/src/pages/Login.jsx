@@ -1,103 +1,201 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
-  const [form, setForm] = useState({
-    documento: "",
-    password: "",
-  });
-
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Datos:", form);
-
-    navigate("/dashboard"); 
+  // Estilos embebidos para nivel Senior (Scoped CSS-in-JS)
+  const styles = {
+    container: {
+      height: '100vh',
+      width: '100vw',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      background: '#f0f2f5',
+      position: 'relative',
+      overflow: 'hidden',
+      fontFamily: "'Inter', sans-serif",
+    },
+    blob: {
+      position: 'absolute',
+      width: '600px',
+      height: '600px',
+      background: 'radial-gradient(circle, rgba(132,204,22,0.3) 0%, rgba(255,255,255,0) 70%)',
+      borderRadius: '50%',
+      filter: 'blur(60px)',
+      zIndex: 0,
+    },
+    card: {
+      background: 'rgba(255, 255, 255, 0.85)',
+      backdropFilter: 'blur(20px)',
+      WebkitBackdropFilter: 'blur(20px)',
+      border: '1px solid rgba(255, 255, 255, 0.6)',
+      padding: '3.5rem',
+      borderRadius: '2.5rem',
+      width: '100%',
+      maxWidth: '400px',
+      boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.1)',
+      zIndex: 1,
+      textAlign: 'center',
+    },
+    logo: {
+      fontSize: '3rem',
+      fontWeight: '900',
+      color: '#166534',
+      margin: 0,
+      letterSpacing: '-2px',
+    },
+    accentBar: {
+      width: '50px',
+      height: '6px',
+      background: '#84cc16',
+      margin: '12px auto 2.5rem',
+      borderRadius: '10px',
+    },
+    inputWrapper: {
+      position: 'relative',
+      marginBottom: '1.2rem',
+    },
+    input: {
+      width: '100%',
+      padding: '1.1rem 1rem 1.1rem 3.5rem',
+      borderRadius: '1.2rem',
+      border: '1px solid #e2e8f0',
+      background: '#ffffff',
+      fontSize: '1rem',
+      outline: 'none',
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      boxSizing: 'border-box',
+    },
+    icon: {
+      position: 'absolute',
+      left: '1.2rem',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      color: '#94a3b8',
+      width: '20px',
+    },
+    buttonMain: {
+      width: '100%',
+      padding: '1.2rem',
+      background: '#84cc16',
+      color: '#fff',
+      border: 'none',
+      borderRadius: '1.2rem',
+      fontWeight: '800',
+      fontSize: '1rem',
+      cursor: 'pointer',
+      boxShadow: '0 10px 20px -5px rgba(132, 204, 22, 0.4)',
+      marginTop: '1rem',
+    },
+    buttonGoogle: {
+      width: '100%',
+      padding: '1rem',
+      background: '#fff',
+      border: '1px solid #e2e8f0',
+      borderRadius: '1.2rem',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '12px',
+      marginTop: '1.5rem',
+      cursor: 'pointer',
+      fontWeight: '600',
+      color: '#475569',
+    },
+    link: {
+      display: 'block',
+      marginTop: '1.5rem',
+      color: '#64748b',
+      textDecoration: 'none',
+      fontSize: '0.9rem',
+      fontWeight: '500',
+    }
   };
 
   return (
     <div style={styles.container}>
-      <form style={styles.card} onSubmit={handleSubmit}>
-        <h2 style={styles.title}>Arachiz</h2>
-        <p style={styles.subtitle}>Iniciar Sesión</p>
+      {/* Background Blobs Animados */}
+      <motion.div 
+        animate={{ x: [0, 50, 0], y: [0, 30, 0] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        style={{ ...styles.blob, top: '-10%', left: '-10%' }} 
+      />
+      <motion.div 
+        animate={{ x: [0, -40, 0], y: [0, -50, 0] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        style={{ ...styles.blob, bottom: '-10%', right: '-10%', background: 'radial-gradient(circle, rgba(34,197,94,0.2) 0%, rgba(255,255,255,0) 70%)' }} 
+      />
 
-        <input
-          type="text"
-          name="documento"
-          placeholder="Número de documento"
-          value={form.documento}
-          onChange={handleChange}
-          style={styles.input}
-        />
+      <motion.div 
+        initial={{ opacity: 0, y: 40, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        style={styles.card}
+      >
+        <h1 style={styles.logo}>Arachiz</h1>
+        <div style={styles.accentBar} />
+        <p style={{ color: '#64748b', marginBottom: '2.5rem', fontWeight: 500 }}>Bienvenido de nuevo</p>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Contraseña"
-          value={form.password}
-          onChange={handleChange}
-          style={styles.input}
-        />
+        <form onSubmit={(e) => { e.preventDefault(); navigate('/dashboard'); }}>
+          <div style={styles.inputWrapper}>
+            <svg style={styles.icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input 
+              style={styles.input} 
+              type="text" 
+              placeholder="Número de documento" 
+              onFocus={(e) => (e.target.style.borderColor = '#84cc16')}
+              onBlur={(e) => (e.target.style.borderColor = '#e2e8f0')}
+              required 
+            />
+          </div>
 
-        <button type="submit" style={styles.button}>
-          Ingresar
+          <div style={styles.inputWrapper}>
+            <svg style={styles.icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input 
+              style={styles.input} 
+              type="password" 
+              placeholder="Contraseña" 
+              onFocus={(e) => (e.target.style.borderColor = '#84cc16')}
+              onBlur={(e) => (e.target.style.borderColor = '#e2e8f0')}
+              required 
+            />
+          </div>
+
+          <motion.button 
+            whileHover={{ scale: 1.03, backgroundColor: '#76b814' }}
+            whileTap={{ scale: 0.97 }}
+            style={styles.buttonMain}
+          >
+            INGRESAR
+          </motion.button>
+        </form>
+
+        <a href="#forgot" style={styles.link}>¿Olvidaste tu contraseña?</a>
+
+        <div style={{ display: 'flex', alignItems: 'center', margin: '2rem 0', color: '#cbd5e1' }}>
+          <div style={{ flex: 1, height: '1px', background: '#e2e8f0' }} />
+          <span style={{ padding: '0 1rem', fontSize: '0.8rem' }}>o</span>
+          <div style={{ flex: 1, height: '1px', background: '#e2e8f0' }} />
+        </div>
+
+        <button style={styles.buttonGoogle}>
+          <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Google
         </button>
 
-        <p style={{ color: "white", marginTop: "10px" }}>
-          ¿No tienes cuenta? <Link to="/register">Regístrate</Link>
-        </p>
-      </form>
+        <motion.button 
+          onClick={() => navigate('/register')}
+          style={{ ...styles.buttonMain, background: 'transparent', border: '2px solid #84cc16', color: '#84cc16', boxShadow: 'none', marginTop: '1.5rem' }}
+          whileHover={{ backgroundColor: 'rgba(132, 204, 22, 0.05)' }}
+        >
+          REGISTRARSE
+        </motion.button>
+      </motion.div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    background: "#0F172A",
-    height: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  card: {
-    background: "#1E293B",
-    padding: "30px",
-    borderRadius: "12px",
-    width: "300px",
-    display: "flex",
-    flexDirection: "column",
-  },
-  title: {
-    color: "#4F46E5",
-    textAlign: "center",
-  },
-  subtitle: {
-    color: "#F1F5F9",
-    textAlign: "center",
-    marginBottom: "20px",
-  },
-  input: {
-    marginBottom: "10px",
-    padding: "10px",
-    borderRadius: "8px",
-    border: "none",
-  },
-  button: {
-    background: "#4F46E5",
-    color: "#fff",
-    padding: "10px",
-    borderRadius: "8px",
-    border: "none",
-    cursor: "pointer",
-  },
 };
 
 export default Login;
