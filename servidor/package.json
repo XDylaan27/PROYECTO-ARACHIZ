@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "vaca": "cowsay"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +14,7 @@
   "type": "commonjs",
   "dependencies": {
     "cors": "^2.8.6",
+    "cowsay": "^1.6.0",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "pg": "^8.20.0"
