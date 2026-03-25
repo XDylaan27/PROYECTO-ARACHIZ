@@ -1,19 +1,28 @@
-const express = require('express');
+// servidor/index.js
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import fichasRoutes from './src/routes/fichasRoutes.js'; // Importar rutas
+
+dotenv.config();
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware para entender JSON
-app.use(express.json());
+// Middlewares
+app.use(cors()); // Permitir conexiones desde React (Frontend)
+app.use(express.json()); // Permitir recibir JSON en el body
 
-// Ruta de prueba
+// Rutas de API
+app.use('/api/fichas', fichasRoutes);
+
+// Ruta de prueba raíz
 app.get('/', (req, res) => {
-    res.json({ 
-        mensaje: 'Servidor Arachiz funcionando correctamente',
-        fecha: new Date().toISOString()
-    });
+    res.json({ mensaje: 'Servidor Arachiz funcionando 🚀' });
 });
 
-// Encender servidor
+// Iniciar servidor
 app.listen(PORT, () => {
     console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+    console.log(`📡 Endpoint listo: http://localhost:${PORT}/api/fichas`);
 });

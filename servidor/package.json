@@ -11,8 +11,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
+    "@supabase/supabase-js": "^2.100.0",
     "cors": "^2.8.6",
     "cowsay": "^1.6.0",
     "dotenv": "^17.3.1",
