@@ -2,7 +2,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import fichasRoutes from './src/routes/fichasRoutes.js'; // Importar rutas
+import fichasRoutes from './src/routes/fichasRoutes.js';
+import authRoutes from './src/routes/authRoutes.js';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(express.json()); // Permitir recibir JSON en el body
 
 // Rutas de API
 app.use('/api/fichas', fichasRoutes);
+app.use('/api/auth', authRoutes); 
 
 // Ruta de prueba raíz
 app.get('/', (req, res) => {
