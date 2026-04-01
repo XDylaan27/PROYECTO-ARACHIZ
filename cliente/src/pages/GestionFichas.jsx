@@ -1,138 +1,61 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import Sidebar from '../components/Sidebar';
+import { Plus, Search, Edit, Trash2 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const GestionFichas = () => {
-  const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
-
-  const styles = {
-    wrapper: { padding: '40px', background: '#f8fafc', minHeight: '100vh', fontFamily: "'Inter', sans-serif", position: 'relative' },
-    backBtn: { background: '#fff', border: '1px solid #e2e8f0', color: '#64748b', padding: '10px 18px', borderRadius: '12px', cursor: 'pointer', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '25px', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' },
-    header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '35px' },
-    title: { fontSize: '2rem', fontWeight: '900', color: '#166534', margin: 0 },
-    btnCreate: { background: '#84cc16', color: 'white', border: 'none', padding: '14px 28px', borderRadius: '14px', fontWeight: '800', cursor: 'pointer', boxShadow: '0 10px 15px -3px rgba(132, 204, 22, 0.3)' },
-    cardTable: { background: 'white', borderRadius: '24px', border: '1px solid #e2e8f0', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.03)' },
-    table: { width: '100%', borderCollapse: 'collapse' },
-    th: { background: '#f1f5f9', padding: '18px', textAlign: 'left', color: '#475569', fontSize: '0.85rem', fontWeight: '800', textTransform: 'uppercase' },
-    td: { padding: '18px', borderTop: '1px solid #f1f5f9', color: '#1e293b' },
-    badge: { padding: '6px 14px', borderRadius: '10px', fontSize: '0.8rem', fontWeight: '700', background: '#dcfce7', color: '#166534' },
-    overlay: { position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(15, 23, 42, 0.5)', backdropFilter: 'blur(6px)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 100 },
-    modal: { background: 'white', padding: '40px', borderRadius: '30px', width: '90%', maxWidth: '560px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.2)', maxHeight: '90vh', overflowY: 'auto' },
-    label: { display: 'block', marginBottom: '6px', fontWeight: '700', color: '#475569', fontSize: '0.9rem' },
-    input: { width: '100%', padding: '12px 14px', borderRadius: '12px', border: '1px solid #cbd5e1', marginBottom: '16px', boxSizing: 'border-box', fontSize: '1rem', outline: 'none' },
-    row: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' },
-  };
-
-  const focusStyle = (e) => (e.target.style.borderColor = '#84cc16');
-  const blurStyle = (e) => (e.target.style.borderColor = '#cbd5e1');
+  const [fichas] = useState([
+    { id: 1, numero: '2670687', programa: 'ADSO', jornada: 'Mañana' },
+    { id: 2, numero: '2670688', programa: 'Multimedia', jornada: 'Tarde' },
+  ]);
 
   return (
-    <div style={styles.wrapper}>
-      <motion.button whileHover={{ x: -5 }} style={styles.backBtn} onClick={() => navigate('/dashboard')}>
-        ⬅ Regresar al Panel
-      </motion.button>
+    <div style={{ display: 'flex', background: '#f8fafc', minHeight: '100vh' }}>
+      <Sidebar />
+      <main style={{ marginLeft: '260px', width: 'calc(100% - 260px)', padding: '40px' }}>
+        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+          <h1 style={{ color: '#166534', margin: 0 }}>Gestión de Fichas</h1>
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            style={{ background: '#84cc16', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '12px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+          >
+            <Plus size={20} /> Nueva Ficha
+          </motion.button>
+        </header>
 
-      <div style={styles.header}>
-        <div>
-          <h2 style={styles.title}>Fichas de Formación</h2>
-          <p style={{ color: '#64748b', margin: '5px 0 0' }}>Administración de grupos y programas</p>
+        <div style={{ background: 'white', borderRadius: '20px', padding: '25px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+          <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+            <div style={{ flex: 1, position: 'relative' }}>
+              <Search style={{ position: 'absolute', left: '12px', top: '10px', color: '#64748b' }} size={18} />
+              <input type="text" placeholder="Buscar por número de ficha..." style={{ width: '100%', padding: '10px 10px 10px 40px', borderRadius: '10px', border: '1px solid #e2e8f0' }} />
+            </div>
+          </div>
+
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ borderBottom: '2px solid #f1f5f9', textAlign: 'left', color: '#64748b', fontSize: '0.9rem' }}>
+                <th style={{ padding: '15px' }}>NÚMERO</th>
+                <th>PROGRAMA</th>
+                <th>JORNADA</th>
+                <th style={{ textAlign: 'center' }}>ACCIONES</th>
+              </tr>
+            </thead>
+            <tbody>
+              {fichas.map(ficha => (
+                <tr key={ficha.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                  <td style={{ padding: '15px', fontWeight: 'bold' }}>{ficha.numero}</td>
+                  <td>{ficha.programa}</td>
+                  <td><span style={{ background: '#f0fdf4', color: '#166534', padding: '4px 12px', borderRadius: '20px', fontSize: '0.8rem' }}>{ficha.jornada}</span></td>
+                  <td style={{ display: 'flex', justifyContent: 'center', gap: '10px', padding: '15px' }}>
+                    <button style={{ color: '#64748b', background: 'none', border: 'none', cursor: 'pointer' }}><Edit size={18} /></button>
+                    <button style={{ color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer' }}><Trash2 size={18} /></button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} style={styles.btnCreate} onClick={() => setShowModal(true)}>
-          + Crear Ficha
-        </motion.button>
-      </div>
-
-      <div style={styles.cardTable}>
-        <table style={styles.table}>
-          <thead>
-            <tr>
-              <th style={styles.th}>Número de Ficha</th>
-              <th style={styles.th}>Programa</th>
-              <th style={styles.th}>Nivel</th>
-              <th style={styles.th}>Regional</th>
-              <th style={styles.th}>Centro</th>
-              <th style={styles.th}>Jornada</th>
-              <th style={styles.th}>Duración</th>
-              <th style={styles.th}>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Sin datos hasta conectar con backend */}
-            <tr>
-              <td colSpan={8} style={{ ...styles.td, textAlign: 'center', color: '#94a3b8', padding: '40px' }}>
-                No hay fichas registradas
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <AnimatePresence>
-        {showModal && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={styles.overlay}>
-            <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} style={styles.modal}>
-              <h3 style={{ margin: '0 0 25px 0', fontSize: '1.6rem', color: '#1e293b' }}>Registrar Nueva Ficha</h3>
-
-              <div style={styles.row}>
-                <div>
-                  <label style={styles.label}>Número de Ficha</label>
-                  <input style={styles.input} placeholder="Ej: 2874013" onFocus={focusStyle} onBlur={blurStyle} />
-                </div>
-                <div>
-                  <label style={styles.label}>Programa</label>
-                  <input style={styles.input} placeholder="Nombre del programa" onFocus={focusStyle} onBlur={blurStyle} />
-                </div>
-              </div>
-
-              <div style={styles.row}>
-                <div>
-                  <label style={styles.label}>Nivel</label>
-                  <select style={styles.input} onFocus={focusStyle} onBlur={blurStyle}>
-                    <option value="">Seleccionar nivel</option>
-                    <option value="tecnico">Técnico</option>
-                    <option value="tecnologo">Tecnólogo</option>
-                  </select>
-                </div>
-                <div>
-                  <label style={styles.label}>Jornada</label>
-                  <select style={styles.input} onFocus={focusStyle} onBlur={blurStyle}>
-                    <option value="">Seleccionar jornada</option>
-                    <option value="manana">Mañana</option>
-                    <option value="tarde">Tarde</option>
-                    <option value="noche">Noche</option>
-                  </select>
-                </div>
-              </div>
-
-              <div style={styles.row}>
-                <div>
-                  <label style={styles.label}>Regional</label>
-                  <input style={styles.input} placeholder="Ej: Regional Bogotá" onFocus={focusStyle} onBlur={blurStyle} />
-                </div>
-                <div>
-                  <label style={styles.label}>Centro de Formación</label>
-                  <input style={styles.input} placeholder="Nombre del centro" onFocus={focusStyle} onBlur={blurStyle} />
-                </div>
-              </div>
-
-              <div>
-                <label style={styles.label}>Duración (meses)</label>
-                <input style={styles.input} type="number" placeholder="Ej: 24" min="1" onFocus={focusStyle} onBlur={blurStyle} />
-              </div>
-
-              <div style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
-                <button onClick={() => setShowModal(false)} style={{ flex: 1, padding: '14px', borderRadius: '12px', border: '1px solid #ddd', background: 'none', fontWeight: 'bold', cursor: 'pointer' }}>
-                  Cancelar
-                </button>
-                <button style={{ ...styles.btnCreate, flex: 1, padding: '14px', boxShadow: 'none' }}>
-                  Guardar
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </main>
     </div>
   );
 };

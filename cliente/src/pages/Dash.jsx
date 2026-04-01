@@ -1,136 +1,138 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom'; // 1. Importamos el hook de navegación
+import { useNavigate } from 'react-router-dom';
+import Sidebar from '../components/Sidebar'; // Importamos el Sidebar que arreglaste
+import { BookOpen, Users, BarChart3 } from 'lucide-react';
 
 const Dash = () => {
-  const navigate = useNavigate(); // 2. Inicializamos el navegador
+  const navigate = useNavigate();
 
   const styles = {
-    container: {
-      minHeight: '100vh',
-      width: '100vw',
-      background: '#f1f5f9',
-      fontFamily: "'Inter', sans-serif",
+    layout: {
       display: 'flex',
-      flexDirection: 'column',
-      position: 'relative',
-      overflowX: 'hidden',
+      minHeight: '100vh',
+      background: '#f1f5f9', // Fondo sutil para que resalten las cards
     },
-    blob: {
-      position: 'absolute',
-      width: '600px',
-      height: '600px',
-      background: 'radial-gradient(circle, rgba(132,204,22,0.1) 0%, rgba(255,255,255,0) 70%)',
-      borderRadius: '50%',
-      filter: 'blur(80px)',
-      zIndex: 0,
+    mainContent: {
+      marginLeft: '260px', // Espacio exacto para el Sidebar
+      width: 'calc(100% - 260px)',
+      padding: '40px',
     },
-    navbar: {
-      height: '80px',
-      background: 'rgba(255, 255, 255, 0.9)',
-      backdropFilter: 'blur(10px)',
+    header: {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      padding: '0 50px',
-      borderBottom: '1px solid #e2e8f0',
-      zIndex: 10,
+      marginBottom: '40px'
     },
-    logo: { fontSize: '1.8rem', fontWeight: '900', color: '#166534', margin: 0, cursor: 'pointer' },
-    userBox: { textAlign: 'right', display: 'flex', alignItems: 'center', gap: '20px' },
-    mainContent: { flex: 1, padding: '40px', zIndex: 1, maxWidth: '1200px', margin: '0 auto', width: '100%' },
-    grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '25px', marginBottom: '40px' },
-    card: { background: 'white', padding: '25px', borderRadius: '24px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', textAlign: 'center' },
-    btnPrimary: {
-      width: '100%', padding: '15px', background: '#84cc16', color: 'white', border: 'none', 
-      borderRadius: '16px', fontWeight: '800', cursor: 'pointer', marginBottom: '15px', fontSize: '1rem'
+    statsGrid: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(3, 1fr)',
+      gap: '20px',
+      marginBottom: '30px'
     },
-    btnSecondary: {
-      width: '100%', padding: '15px', background: '#166534', color: 'white', border: 'none', 
-      borderRadius: '16px', fontWeight: '800', cursor: 'pointer', fontSize: '1rem'
+    statCard: {
+      background: '#fff',
+      padding: '25px',
+      borderRadius: '20px',
+      boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '10px'
+    },
+    adminCard: {
+      background: '#fff',
+      padding: '30px',
+      borderRadius: '25px',
+      width: '45%',
+      boxShadow: '0 10px 15px -3px rgba(0,0,0,0.05)'
+    },
+    chartCard: {
+      background: '#166534',
+      padding: '30px',
+      borderRadius: '25px',
+      width: '50%',
+      color: '#fff',
+      textAlign: 'center'
+    },
+    btnGreen: {
+      width: '100%',
+      padding: '15px',
+      borderRadius: '12px',
+      border: 'none',
+      marginBottom: '15px',
+      cursor: 'pointer',
+      fontWeight: 'bold',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '10px',
+      color: 'white'
     }
   };
 
   return (
-    <div style={styles.container}>
-      {/* Decoración de fondo */}
-      <div style={{ ...styles.blob, top: '-10%', right: '-10%' }} />
-      <div style={{ ...styles.blob, bottom: '-10%', left: '-10%', background: 'radial-gradient(circle, rgba(34,197,94,0.1) 0%, rgba(255,255,255,0) 70%)' }} />
+    <div style={styles.layout}>
+      {/* 1. Agregamos el Sidebar aquí */}
+      <Sidebar />
 
-      <header style={styles.navbar}>
-        <h1 style={styles.logo} onClick={() => navigate('/dashboard')}>Arachiz</h1>
-        <div style={styles.userBox}>
-          <div>
-            <div style={{ fontWeight: '800', color: '#1e293b' }}>Usuario</div>
-            <div style={{ fontSize: '0.8rem', color: '#84cc16', fontWeight: 'bold' }}>Panel de Control</div>
-          </div>
-          <button 
-            onClick={() => navigate('/')} 
-            style={{ background: '#fee2e2', color: '#dc2626', border: 'none', padding: '8px 15px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}
-          >
-            Salir
-          </button>
-        </div>
-      </header>
-
+      {/* 2. Contenido Principal */}
       <main style={styles.mainContent}>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <h2 style={{ color: '#0f172a', marginBottom: '30px' }}>Bienvenido al Sistema</h2>
+        <header style={styles.header}>
+          <h1 style={{ color: '#166534', fontWeight: '900', margin: 0 }}>Arachiz</h1>
+          <div style={{ textAlign: 'right' }}>
+            <span style={{ fontWeight: 'bold', display: 'block' }}>Dylan Garcia</span>
+            <span style={{ color: '#84cc16', fontSize: '0.8rem' }}>Panel de Control</span>
+          </div>
+        </header>
 
-          {/* Estadísticas Rápidas */}
-          <div style={styles.grid}>
-            <StatCard icon="🆔" label="Fichas Registradas" val="--" />
-            <StatCard icon="📚" label="Materias Activas" val="--" />
-            <StatCard icon="✅" label="Asistencias Hoy" val="--" />
+        <h2 style={{ marginBottom: '30px' }}>Bienvenido al Sistema</h2>
+
+        {/* Tarjetas de estadísticas */}
+        <div style={styles.statsGrid}>
+          <motion.div whileHover={{ y: -5 }} style={styles.statCard}>
+            <Users color="#84cc16" />
+            <span style={{ fontSize: '0.8rem', color: '#64748b' }}>FICHAS REGISTRADAS</span>
+            <b style={{ fontSize: '1.5rem' }}>12</b>
+          </motion.div>
+          <motion.div whileHover={{ y: -5 }} style={styles.statCard}>
+            <BookOpen color="#84cc16" />
+            <span style={{ fontSize: '0.8rem', color: '#64748b' }}>MATERIAS ACTIVAS</span>
+            <b style={{ fontSize: '1.5rem' }}>8</b>
+          </motion.div>
+          <motion.div whileHover={{ y: -5 }} style={styles.statCard}>
+            <BarChart3 color="#84cc16" />
+            <span style={{ fontSize: '0.8rem', color: '#64748b' }}>ASISTENCIAS HOY</span>
+            <b style={{ fontSize: '1.5rem' }}>85%</b>
+          </motion.div>
+        </div>
+
+        {/* Sección de administración y gráfico */}
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={styles.adminCard}>
+            <h3 style={{ color: '#166534', marginBottom: '20px' }}>Administración</h3>
+            <button 
+              onClick={() => navigate('/materias')}
+              style={{ ...styles.btnGreen, background: '#84cc16' }}
+            >
+              <BookOpen size={18} /> Gestionar Materias
+            </button>
+            <button 
+              onClick={() => navigate('/fichas')}
+              style={{ ...styles.btnGreen, background: '#166534' }}
+            >
+              <Users size={18} /> Gestionar Fichas
+            </button>
           </div>
 
-          {/* Menú de Navegación a CRUDs */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
-            <div style={{ ...styles.card, textAlign: 'left' }}>
-              <h3 style={{ marginTop: 0, color: '#166534' }}>Administración</h3>
-              <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '20px' }}>
-                Accede a los módulos de gestión para configurar el sistema.
-              </p>
-              
-              {/* BOTONES CON NAVEGACIÓN */}
-              <motion.button 
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                style={styles.btnPrimary}
-                onClick={() => navigate('/materias')} // Navega a Materias
-              >
-                📚 Gestionar Materias
-              </motion.button>
-
-              <motion.button 
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                style={styles.btnSecondary}
-                onClick={() => navigate('/fichas')} // Navega a Fichas
-              >
-                🆔 Gestionar Fichas
-              </motion.button>
-            </div>
-
-            <div style={{ ...styles.card, background: '#166534', color: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <h3>Resumen de Actividad</h3>
-              <p style={{ opacity: 0.8 }}>No hay reportes recientes para mostrar.</p>
-              <div style={{ fontSize: '3rem', marginTop: '10px' }}>📊</div>
-            </div>
+          <div style={styles.chartCard}>
+            <h3>Resumen de Actividad</h3>
+            <div style={{ margin: '40px 0', fontSize: '3rem' }}>📊</div>
+            <p>No hay reportes recientes para mostrar.</p>
           </div>
-        </motion.div>
+        </div>
       </main>
     </div>
   );
 };
-
-// Componente auxiliar para las tarjetitas de arriba
-const StatCard = ({ icon, label, val }) => (
-  <div style={{ background: 'white', padding: '20px', borderRadius: '20px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
-    <div style={{ fontSize: '1.5rem', marginBottom: '5px' }}>{icon}</div>
-    <div style={{ fontSize: '1.8rem', fontWeight: '900', color: '#1e293b' }}>{val}</div>
-    <div style={{ color: '#64748b', fontWeight: '600', fontSize: '0.8rem', textTransform: 'uppercase' }}>{label}</div>
-  </div>
-);
 
 export default Dash;

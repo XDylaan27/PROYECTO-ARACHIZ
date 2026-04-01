@@ -1,24 +1,23 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Dash from "./pages/Dash";
-import GestionFichas from "./pages/GestionFichas"; 
-import GestionMaterias from "./pages/GestionMaterias";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import Dash from './pages/Dash';
+import GestionFichas from './pages/GestionFichas';
+import GestionMaterias from './pages/GestionMaterias';
+import ControlAsistencia from './pages/ControlAsistencia';
+import Perfil from './pages/Perfil';
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
-        {/* Rutas Públicas */}
         <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-
-        {/* Rutas Privadas (Dashboard y CRUDs) */}
         <Route path="/dashboard" element={<Dash />} />
         <Route path="/fichas" element={<GestionFichas />} />
         <Route path="/materias" element={<GestionMaterias />} />
+        <Route path="/asistencia" element={<ControlAsistencia />} />
+        <Route path="/perfil" element={<Perfil />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
 
