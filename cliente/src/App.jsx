@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Dash from "./pages/Dash";
 import GestionFichas from "./pages/GestionFichas"; 
 import GestionMaterias from "./pages/GestionMaterias";
+import InfoFicha from "./pages/InfoFicha";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/dashboard" element={<Dash />} />
         <Route path="/fichas" element={<GestionFichas />} />
         <Route path="/materias" element={<GestionMaterias />} />
+        <Route path="/ficha/:id" element={<InfoFicha />} />
       </Routes>
     </BrowserRouter>
   );

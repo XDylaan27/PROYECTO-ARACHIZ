@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const GestionFichas = () => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  
+
   // Estado para la lista de fichas (Lectura)
   const [fichas, setFichas] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -21,7 +21,7 @@ const GestionFichas = () => {
     jornada: '',
     duracion_meses: '',
     codigo_invitacion: '', // Podrías generarlo automático luego
-    administrador_id: 1 
+    administrador_id: 1
   });
 
   const [error, setError] = useState(null);
@@ -32,7 +32,7 @@ const GestionFichas = () => {
       try {
         const response = await fetch('http://localhost:3000/api/fichas');
         if (!response.ok) throw new Error('Error al cargar fichas');
-        
+
         const data = await response.json();
         setFichas(data);
       } catch (err) {
@@ -80,7 +80,7 @@ const GestionFichas = () => {
       if (response.ok) {
         alert('✅ ¡Ficha creada exitosamente!');
         setShowModal(false);
-        
+
         // Recargar la lista para mostrar la nueva ficha sin recargar la página
         const updatedResponse = await fetch('http://localhost:3000/api/fichas');
         const updatedData = await updatedResponse.json();
@@ -185,8 +185,20 @@ const GestionFichas = () => {
                   <td style={styles.td}>{ficha.jornada || '-'}</td>
                   <td style={styles.td}>{ficha.duracion_meses ? `${ficha.duracion_meses} meses` : '-'}</td>
                   <td style={styles.td}>
-                    <button style={{ background: 'none', border: 'none', color: '#84cc16', cursor: 'pointer', fontWeight: 'bold' }}>
-                      Ver
+                    <button
+                      onClick={() => navigate(`/ficha/${ficha.id}`)} // 👈 ESTO ES LO IMPORTANTE
+                      style={{
+                        background: '#3b82f6',
+                        color: 'white',
+                        border: 'none',
+                        padding: '6px 12px',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        fontWeight: 'bold',
+                        fontSize: '0.85rem'
+                      }}
+                    >
+                      Ver Detalles
                     </button>
                   </td>
                 </tr>
@@ -206,27 +218,27 @@ const GestionFichas = () => {
                 <div style={styles.row}>
                   <div>
                     <label style={styles.label}>Número de Ficha *</label>
-                    <input 
-                      style={styles.input} 
+                    <input
+                      style={styles.input}
                       name="numero_ficha"
                       value={formData.numero_ficha}
                       onChange={handleChange}
-                      placeholder="Ej: 2874013" 
-                      onFocus={focusStyle} 
-                      onBlur={blurStyle} 
+                      placeholder="Ej: 2874013"
+                      onFocus={focusStyle}
+                      onBlur={blurStyle}
                       required
                     />
                   </div>
                   <div>
                     <label style={styles.label}>Programa *</label>
-                    <input 
-                      style={styles.input} 
+                    <input
+                      style={styles.input}
                       name="programa"
                       value={formData.programa}
                       onChange={handleChange}
-                      placeholder="Nombre del programa" 
-                      onFocus={focusStyle} 
-                      onBlur={blurStyle} 
+                      placeholder="Nombre del programa"
+                      onFocus={focusStyle}
+                      onBlur={blurStyle}
                       required
                     />
                   </div>
@@ -235,12 +247,12 @@ const GestionFichas = () => {
                 <div style={styles.row}>
                   <div>
                     <label style={styles.label}>Nivel *</label>
-                    <select 
-                      style={styles.input} 
+                    <select
+                      style={styles.input}
                       name="nivel"
                       value={formData.nivel}
                       onChange={handleChange}
-                      onFocus={focusStyle} 
+                      onFocus={focusStyle}
                       onBlur={blurStyle}
                       required
                     >
@@ -251,12 +263,12 @@ const GestionFichas = () => {
                   </div>
                   <div>
                     <label style={styles.label}>Jornada</label>
-                    <select 
-                      style={styles.input} 
+                    <select
+                      style={styles.input}
                       name="jornada"
                       value={formData.jornada}
                       onChange={handleChange}
-                      onFocus={focusStyle} 
+                      onFocus={focusStyle}
                       onBlur={blurStyle}
                     >
                       <option value="">Seleccionar jornada</option>
@@ -270,56 +282,56 @@ const GestionFichas = () => {
                 <div style={styles.row}>
                   <div>
                     <label style={styles.label}>Regional</label>
-                    <input 
-                      style={styles.input} 
+                    <input
+                      style={styles.input}
                       name="region"
                       value={formData.region}
                       onChange={handleChange}
-                      placeholder="Ej: Regional Tolima" 
-                      onFocus={focusStyle} 
-                      onBlur={blurStyle} 
+                      placeholder="Ej: Regional Tolima"
+                      onFocus={focusStyle}
+                      onBlur={blurStyle}
                     />
                   </div>
                   <div>
                     <label style={styles.label}>Centro de Formación</label>
-                    <input 
-                      style={styles.input} 
+                    <input
+                      style={styles.input}
                       name="centro_formacion"
                       value={formData.centro_formacion}
                       onChange={handleChange}
-                      placeholder="Nombre del centro" 
-                      onFocus={focusStyle} 
-                      onBlur={blurStyle} 
+                      placeholder="Nombre del centro"
+                      onFocus={focusStyle}
+                      onBlur={blurStyle}
                     />
                   </div>
                 </div>
 
                 <div>
                   <label style={styles.label}>Duración (meses)</label>
-                  <input 
-                    style={styles.input} 
-                    type="number" 
+                  <input
+                    style={styles.input}
+                    type="number"
                     name="duracion_meses"
                     value={formData.duracion_meses}
                     onChange={handleChange}
-                    placeholder="Ej: 24" 
-                    min="1" 
-                    onFocus={focusStyle} 
-                    onBlur={blurStyle} 
+                    placeholder="Ej: 24"
+                    min="1"
+                    onFocus={focusStyle}
+                    onBlur={blurStyle}
                   />
                 </div>
 
                 {error && <p style={styles.errorMsg}>{error}</p>}
 
                 <div style={{ display: 'flex', gap: '15px', marginTop: '20px' }}>
-                  <button 
+                  <button
                     type="button"
-                    onClick={() => setShowModal(false)} 
+                    onClick={() => setShowModal(false)}
                     style={{ flex: 1, padding: '14px', borderRadius: '12px', border: '1px solid #ddd', background: 'none', fontWeight: 'bold', cursor: 'pointer' }}
                   >
                     Cancelar
                   </button>
-                  <button 
+                  <button
                     type="submit"
                     style={{ ...styles.btnCreate, flex: 1, padding: '14px', boxShadow: 'none' }}
                   >
