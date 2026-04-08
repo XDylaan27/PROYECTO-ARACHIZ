@@ -1,9 +1,34 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const navigate = useNavigate();
+  const [form, setForm] = useState({ nombre: '', apellido: '', documento: '', email: '', password: '', rol: '' });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Error al registrar');
+      navigate('/');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const styles = {
     container: {
@@ -126,14 +151,13 @@ const Register = () => {
           <p style={{ color: '#64748b', fontWeight: 500 }}>Crea tu cuenta institucional</p>
         </div>
 
-        <form style={styles.form} onSubmit={(e) => e.preventDefault()}>
+        <form style={styles.form} onSubmit={handleSubmit}>
 
           {/* Rol */}
           <div style={styles.inputWrapper}>
             <svg style={styles.icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a5 5 0 1 0 0 10A5 5 0 0 0 12 2z"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-            <select style={styles.select} onFocus={focusStyle} onBlur={blurStyle} defaultValue="">
+            <select name="rol" style={styles.select} onFocus={focusStyle} onBlur={blurStyle} value={form.rol} onChange={handleChange} required>
               <option value="" disabled>Seleccionar rol</option>
-              <option value="admin">Administrador</option>
               <option value="instructor">Instructor</option>
               <option value="aprendiz">Aprendiz</option>
             </select>
@@ -143,39 +167,42 @@ const Register = () => {
           <div style={styles.row}>
             <div style={styles.inputWrapper}>
               <svg style={styles.icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <input style={styles.input} type="text" placeholder="Nombre" onFocus={focusStyle} onBlur={blurStyle} />
+              <input name="nombre" style={styles.input} type="text" placeholder="Nombre" onFocus={focusStyle} onBlur={blurStyle} value={form.nombre} onChange={handleChange} required />
             </div>
             <div style={styles.inputWrapper}>
               <svg style={styles.icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <input style={styles.input} type="text" placeholder="Apellido" onFocus={focusStyle} onBlur={blurStyle} />
+              <input name="apellido" style={styles.input} type="text" placeholder="Apellido" onFocus={focusStyle} onBlur={blurStyle} value={form.apellido} onChange={handleChange} required />
             </div>
           </div>
 
           {/* Documento */}
           <div style={styles.inputWrapper}>
             <svg style={styles.icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
-            <input style={styles.input} type="text" placeholder="Número de documento" onFocus={focusStyle} onBlur={blurStyle} />
+            <input name="documento" style={styles.input} type="text" placeholder="Número de documento" onFocus={focusStyle} onBlur={blurStyle} value={form.documento} onChange={handleChange} required />
           </div>
 
           {/* Email */}
           <div style={styles.inputWrapper}>
             <svg style={styles.icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            <input style={styles.input} type="email" placeholder="Correo electrónico" onFocus={focusStyle} onBlur={blurStyle} />
+            <input name="email" style={styles.input} type="email" placeholder="Correo electrónico" onFocus={focusStyle} onBlur={blurStyle} value={form.email} onChange={handleChange} required />
           </div>
 
           {/* Contraseña */}
           <div style={styles.inputWrapper}>
             <svg style={styles.icon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <input style={styles.input} type="password" placeholder="Contraseña" onFocus={focusStyle} onBlur={blurStyle} />
+            <input name="password" style={styles.input} type="password" placeholder="Contraseña" onFocus={focusStyle} onBlur={blurStyle} value={form.password} onChange={handleChange} required />
           </div>
+
+          {error && <p style={{ color: '#ef4444', fontSize: '0.9rem', textAlign: 'center', margin: 0 }}>{error}</p>}
 
           <motion.button
             whileHover={{ scale: 1.02, backgroundColor: '#76b814' }}
             whileTap={{ scale: 0.98 }}
             style={styles.buttonSubmit}
-            onClick={() => navigate('/')}
+            type="submit"
+            disabled={loading}
           >
-            FINALIZAR REGISTRO
+            {loading ? 'REGISTRANDO...' : 'FINALIZAR REGISTRO'}
           </motion.button>
         </form>
 

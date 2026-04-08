@@ -1,11 +1,11 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../components/Sidebar'; // Importamos el Sidebar que arreglaste
+import Sidebar from '../components/Sidebar';
 import { BookOpen, Users, BarChart3 } from 'lucide-react';
 
-const Dash = () => {
+const DashboardInstructor = () => {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   const styles = {
     layout: {
@@ -80,12 +80,12 @@ const Dash = () => {
         <header style={styles.header}>
           <h1 style={{ color: '#166534', fontWeight: '900', margin: 0 }}>Arachiz</h1>
           <div style={{ textAlign: 'right' }}>
-            <span style={{ fontWeight: 'bold', display: 'block' }}>Dylan Garcia</span>
-            <span style={{ color: '#84cc16', fontSize: '0.8rem' }}>Panel de Control</span>
+            <span style={{ fontWeight: 'bold', display: 'block' }}>{user.nombre} {user.apellido}</span>
+            <span style={{ color: '#84cc16', fontSize: '0.8rem', textTransform: 'capitalize' }}>{user.rol || 'Instructor'}</span>
           </div>
         </header>
 
-        <h2 style={{ marginBottom: '30px' }}>Bienvenido al Sistema</h2>
+        <h2 style={{ marginBottom: '30px' }}>Bienvenido, {user.nombre}</h2>
 
         {/* Tarjetas de estadísticas */}
         <div style={styles.statsGrid}>
@@ -135,4 +135,4 @@ const Dash = () => {
   );
 };
 
-export default Dash;
+export default DashboardInstructor;
