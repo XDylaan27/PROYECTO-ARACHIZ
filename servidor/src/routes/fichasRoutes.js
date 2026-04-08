@@ -1,10 +1,17 @@
-import express from 'express';
-import { crearFicha, obtenerFichas } from '../controllers/fichasController.js';
+import { Router } from 'express';
+import { getFichasByInstructor, getAllFichas, getFichaById, crearFicha, editarFicha } from '../controllers/fichasController.js';
 
-const router = express.Router();
+const router = Router();
 
-// Definir endpoints
-router.post('/', crearFicha);       // POST http://localhost:3000/api/fichas
-router.get('/', obtenerFichas);     // GET http://localhost:3000/api/fichas
+const authMiddleware = (req, res, next) => {
+  req.userId = req.headers['x-user-id'];
+  next();
+};
+
+router.get('/', authMiddleware, getAllFichas);
+router.get('/instructor', authMiddleware, getFichasByInstructor);
+router.get('/:id', authMiddleware, getFichaById);
+router.post('/', authMiddleware, crearFicha);
+router.put('/:id', authMiddleware, editarFicha);
 
 export default router;

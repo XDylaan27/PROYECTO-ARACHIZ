@@ -1,7 +1,6 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, BookOpen, CheckSquare, UserCircle, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, CheckSquare, UserCircle, LogOut } from 'lucide-react';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -10,10 +9,15 @@ const Sidebar = () => {
   const menuItems = [
     { name: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
     { name: 'Fichas', icon: <Users size={20} />, path: '/fichas' },
-    { name: 'Materias', icon: <BookOpen size={20} />, path: '/materias' },
     { name: 'Asistencia', icon: <CheckSquare size={20} />, path: '/asistencia' },
     { name: 'Mi Perfil', icon: <UserCircle size={20} />, path: '/perfil' },
   ];
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    navigate('/');
+  };
 
   const styles = {
     sidebar: {
@@ -60,7 +64,7 @@ const Sidebar = () => {
           </motion.div>
         ))}
       </nav>
-      <div style={styles.logout} onClick={() => navigate('/')}>
+      <div style={styles.logout} onClick={handleLogout}>
         <LogOut size={20} /> Cerrar Sesión
       </div>
     </div>
