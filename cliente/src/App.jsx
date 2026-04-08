@@ -5,6 +5,7 @@ import DashboardInstructor from './pages/DashboardInstructor';
 import DashboardAprendiz from './pages/DashboardAprendiz';
 import GestionFichas from './pages/GestionFichas';
 import DetalleFicha from './pages/DetalleFicha';
+import DetalleMateria from './pages/DetalleMateria';
 import ControlAsistencia from './pages/ControlAsistencia';
 import Perfil from './pages/Perfil';
 
@@ -18,6 +19,7 @@ function App() {
         <Route path="/dashboard-aprendiz" element={<DashboardAprendiz />} />
         <Route path="/fichas" element={<GestionFichas />} />
         <Route path="/fichas/:id" element={<DetalleFicha />} />
+        <Route path="/materias/:id" element={<DetalleMateria />} />
         <Route path="/asistencia" element={<ControlAsistencia />} />
         <Route path="/perfil" element={<Perfil />} />
       </Routes>
