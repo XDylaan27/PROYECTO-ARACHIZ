@@ -3,10 +3,7 @@ import { supabaseAdmin } from '../config/supabaseClient.js';
 export const getMateriasByFicha = async (req, res) => {
   try {
     const { ficha_id } = req.query;
-
-    if (!ficha_id) {
-      return res.status(400).json({ error: 'ficha_id es requerido' });
-    }
+    if (!ficha_id) return res.status(400).json({ error: 'ficha_id es requerido' });
 
     const { data, error } = await supabaseAdmin
       .from('materias')
@@ -18,6 +15,23 @@ export const getMateriasByFicha = async (req, res) => {
     res.json({ success: true, materias: data });
   } catch (err) {
     console.error('Error al obtener materias:', err);
+    res.status(500).json({ success: false, error: 'Error interno del servidor' });
+  }
+};
+
+export const getMateriaById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { data, error } = await supabaseAdmin
+      .from('materias')
+      .select('id, nombre_materia, tipo_materia, ficha_id')
+      .eq('id', id)
+      .single();
+
+    if (error || !data) return res.status(404).json({ error: 'Materia no encontrada' });
+    res.json({ success: true, materia: data });
+  } catch (err) {
+    console.error('Error al obtener materia:', err);
     res.status(500).json({ success: false, error: 'Error interno del servidor' });
   }
 };

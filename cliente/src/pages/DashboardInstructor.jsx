@@ -1,11 +1,17 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
-import { BookOpen, Users, BarChart3 } from 'lucide-react';
+import { BookOpen, Users, BarChart3, LogOut } from 'lucide-react';
 
 const DashboardInstructor = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    navigate('/');
+  };
 
   const styles = {
     layout: {
@@ -79,9 +85,15 @@ const DashboardInstructor = () => {
       <main style={styles.mainContent}>
         <header style={styles.header}>
           <h1 style={{ color: '#166534', fontWeight: '900', margin: 0 }}>Arachiz</h1>
-          <div style={{ textAlign: 'right' }}>
-            <span style={{ fontWeight: 'bold', display: 'block' }}>{user.nombre} {user.apellido}</span>
-            <span style={{ color: '#84cc16', fontSize: '0.8rem', textTransform: 'capitalize' }}>{user.rol || 'Instructor'}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{ textAlign: 'right' }}>
+              <span style={{ fontWeight: 'bold', display: 'block' }}>{user.nombre} {user.apellido}</span>
+              <span style={{ color: '#84cc16', fontSize: '0.8rem', textTransform: 'capitalize' }}>{user.rol || 'Instructor'}</span>
+            </div>
+            <button onClick={handleLogout}
+              style={{ background: 'none', border: '1px solid #e2e8f0', color: '#64748b', padding: '8px 14px', borderRadius: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: '600', fontSize: '0.85rem' }}>
+              <LogOut size={16} /> Salir
+            </button>
           </div>
         </header>
 

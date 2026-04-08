@@ -181,8 +181,8 @@ const GestionFichas = () => {
                 </div>
 
                 <div>
-                  <label style={labelStyle}>Jornada</label>
-                  <select name="jornada" value={form.jornada} onChange={handleChange} style={inputStyle}>
+                  <label style={labelStyle}>Jornada *</label>
+                  <select name="jornada" value={form.jornada} onChange={handleChange} required style={inputStyle}>
                     <option value="">Seleccionar jornada</option>
                     <option value="Mañana">Mañana</option>
                     <option value="Tarde">Tarde</option>
@@ -191,20 +191,20 @@ const GestionFichas = () => {
                 </div>
 
                 <div>
-                  <label style={labelStyle}>Región</label>
-                  <input name="region" type="text" value={form.region} onChange={handleChange} style={inputStyle}
+                  <label style={labelStyle}>Región *</label>
+                  <input name="region" type="text" value={form.region} onChange={handleChange} required style={inputStyle}
                     onFocus={(e) => e.target.style.borderColor = '#84cc16'} onBlur={(e) => e.target.style.borderColor = '#e2e8f0'} />
                 </div>
 
                 <div>
-                  <label style={labelStyle}>Centro de Formación</label>
-                  <input name="centro_formacion" type="text" value={form.centro_formacion} onChange={handleChange} style={inputStyle}
+                  <label style={labelStyle}>Centro de Formación *</label>
+                  <input name="centro_formacion" type="text" value={form.centro_formacion} onChange={handleChange} required style={inputStyle}
                     onFocus={(e) => e.target.style.borderColor = '#84cc16'} onBlur={(e) => e.target.style.borderColor = '#e2e8f0'} />
                 </div>
 
                 <div>
-                  <label style={labelStyle}>Duración (meses, máx. 30)</label>
-                  <input name="duracion_meses" type="number" min="1" max="30" value={form.duracion_meses} onChange={handleChange} style={inputStyle}
+                  <label style={labelStyle}>Duración (meses, máx. 30) *</label>
+                  <input name="duracion_meses" type="number" min="1" max="30" value={form.duracion_meses} onChange={handleChange} required style={inputStyle}
                     onFocus={(e) => e.target.style.borderColor = '#84cc16'} onBlur={(e) => e.target.style.borderColor = '#e2e8f0'} />
                 </div>
 

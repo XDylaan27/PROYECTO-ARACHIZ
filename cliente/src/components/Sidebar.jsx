@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, CheckSquare, UserCircle, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, UserCircle, LogOut } from 'lucide-react';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -9,7 +9,6 @@ const Sidebar = () => {
   const menuItems = [
     { name: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
     { name: 'Fichas', icon: <Users size={20} />, path: '/fichas' },
-    { name: 'Asistencia', icon: <CheckSquare size={20} />, path: '/asistencia' },
     { name: 'Mi Perfil', icon: <UserCircle size={20} />, path: '/perfil' },
   ];
 

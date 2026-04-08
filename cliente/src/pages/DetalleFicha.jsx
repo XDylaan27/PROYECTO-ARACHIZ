@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
-import { Plus, BookOpen, Trash2, Edit, Users, Copy, Check } from 'lucide-react';
+import { Plus, BookOpen, Trash2, Edit, Users, Copy, Check, Eye } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const FORM_MATERIA_INICIAL = { nombre_materia: '', tipo_materia: '' };
@@ -30,6 +30,7 @@ const DetalleFicha = () => {
   const [ficha, setFicha] = useState(null);
   const [materias, setMaterias] = useState([]);
   const [aprendices, setAprendices] = useState([]);
+  const [busquedaAprendiz, setBusquedaAprendiz] = useState('');
   const [showModalMateria, setShowModalMateria] = useState(false);
   const [showModalEditar, setShowModalEditar] = useState(false);
   const [formMateria, setFormMateria] = useState(FORM_MATERIA_INICIAL);
@@ -127,6 +128,16 @@ const DetalleFicha = () => {
     setCopiado(true);
     setTimeout(() => setCopiado(false), 2000);
   };
+
+  const aprendicesFiltrados = aprendices.filter(a => {
+    const q = busquedaAprendiz.toLowerCase();
+    return (
+      a.nombre?.toLowerCase().includes(q) ||
+      a.apellido?.toLowerCase().includes(q) ||
+      a.documento?.toLowerCase().includes(q) ||
+      a.email?.toLowerCase().includes(q)
+    );
+  });
 
   const badgeColor = (tipo) => tipo === 'transversal'
     ? { background: '#e0f2fe', color: '#0369a1' }
@@ -232,9 +243,11 @@ const DetalleFicha = () => {
                       )}
                     </td>
                     <td style={{ textAlign: 'center', padding: '14px' }}>
-                      <button style={{ color: '#ef4444', background: 'none', border: 'none', cursor: 'pointer' }}>
-                        <Trash2 size={17} />
-                      </button>
+                      <motion.button whileHover={{ scale: 1.05 }}
+                        onClick={() => navigate(`/materias/${materia.id}`)}
+                        style={{ background: '#f0fdf4', color: '#166534', border: '1px solid #bbf7d0', padding: '7px 14px', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '5px', fontSize: '0.82rem' }}>
+                        <Eye size={14} /> Ver info
+                      </motion.button>
                     </td>
                   </tr>
                 ))}
@@ -250,8 +263,18 @@ const DetalleFicha = () => {
             <h2 style={{ margin: 0, color: '#1e293b', fontSize: '1.2rem' }}>Aprendices ({aprendices.length})</h2>
           </div>
 
-          {aprendices.length === 0 ? (
-            <p style={{ textAlign: 'center', color: '#94a3b8', padding: '30px 0' }}>Ningún aprendiz se ha unido aún. Comparte el código de invitación.</p>
+          <div style={{ position: 'relative', marginBottom: '20px' }}>
+            <svg style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Buscar por nombre, documento o email..."
+              value={busquedaAprendiz} onChange={(e) => setBusquedaAprendiz(e.target.value)}
+              style={{ width: '100%', padding: '10px 10px 10px 40px', borderRadius: '10px', border: '1px solid #e2e8f0', outline: 'none', boxSizing: 'border-box', fontSize: '0.95rem' }}
+              onFocus={(e) => e.target.style.borderColor = '#84cc16'} onBlur={(e) => e.target.style.borderColor = '#e2e8f0'} />
+          </div>
+
+          {aprendicesFiltrados.length === 0 ? (
+            <p style={{ textAlign: 'center', color: '#94a3b8', padding: '30px 0' }}>
+              {aprendices.length === 0 ? 'Ningún aprendiz se ha unido aún. Comparte el código de invitación.' : 'No se encontraron aprendices con ese criterio.'}
+            </p>
           ) : (
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
@@ -263,7 +286,7 @@ const DetalleFicha = () => {
                 </tr>
               </thead>
               <tbody>
-                {aprendices.map(a => (
+                {aprendicesFiltrados.map(a => (
                   <tr key={a.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                     <td style={{ padding: '14px 16px', fontWeight: '600' }}>{a.nombre} {a.apellido}</td>
                     <td>{a.documento}</td>
@@ -294,9 +317,9 @@ const DetalleFicha = () => {
                     onFocus={(e) => e.target.style.borderColor = '#84cc16'} onBlur={(e) => e.target.style.borderColor = '#e2e8f0'} />
                 </div>
                 <div>
-                  <label style={labelStyle}>Tipo de Materia</label>
+                  <label style={labelStyle}>Tipo de Materia *</label>
                   <select name="tipo_materia" value={formMateria.tipo_materia}
-                    onChange={(e) => setFormMateria({ ...formMateria, tipo_materia: e.target.value })} style={inputStyle}>
+                    onChange={(e) => setFormMateria({ ...formMateria, tipo_materia: e.target.value })} required style={inputStyle}>
                     <option value="">Seleccionar tipo</option>
                     <option value="transversal">Transversal</option>
                     <option value="tecnica">Técnica</option>

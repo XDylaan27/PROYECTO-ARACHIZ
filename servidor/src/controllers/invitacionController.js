@@ -44,16 +44,16 @@ export const unirseConCodigo = async (req, res) => {
       return res.status(404).json({ error: 'Código de invitación inválido' });
     }
 
-    // Verificar que el aprendiz no esté ya en la ficha
-    const { data: yaExiste } = await supabaseAdmin
+    // Verificar que el aprendiz no esté ya en ninguna ficha
+    const { data: fichaActual } = await supabaseAdmin
       .from('fichas_usuarios')
       .select('id')
-      .eq('ficha_id', ficha.id)
       .eq('usuario_id', aprendiz_id)
+      .eq('rol_en_ficha', 'aprendiz')
       .single();
 
-    if (yaExiste) {
-      return res.status(409).json({ error: 'Ya estás inscrito en esta ficha' });
+    if (fichaActual) {
+      return res.status(409).json({ error: 'Ya estás inscrito en una ficha. Un aprendiz solo puede pertenecer a una ficha.' });
     }
 
     // Inscribir al aprendiz

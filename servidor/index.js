@@ -15,6 +15,7 @@ import fichasRoutes from './src/routes/fichasRoutes.js';
 import authRoutes from './src/routes/authRoutes.js';
 import materiasRoutes from './src/routes/materiasRoutes.js';
 import invitacionRoutes from './src/routes/invitacionRoutes.js';
+import asistenciaRoutes from './src/routes/asistenciaRoutes.js';
 
 
 const app = express();
@@ -28,6 +29,7 @@ app.use('/api/fichas', fichasRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/materias', materiasRoutes);
 app.use('/api/invitacion', invitacionRoutes);
+app.use('/api/asistencia', asistenciaRoutes);
 
 app.get('/', (req, res) => {
     res.json({ mensaje: 'Servidor Arachiz funcionando 🚀' });
