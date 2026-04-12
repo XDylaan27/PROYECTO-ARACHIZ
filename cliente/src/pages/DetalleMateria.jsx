@@ -100,7 +100,14 @@ const DetalleMateria = () => {
 
   const formatHora = (ts) => ts ? new Date(ts).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }) : '-';
   const formatFecha = (ts) => ts ? new Date(ts).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
-  const getFechaISO = (ts) => ts ? new Date(ts).toISOString().slice(0, 10) : '';
+  const getFechaISO = (ts) => {
+    if (!ts) return '';
+    const d = new Date(ts);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  };
   const getHoraNum = (ts) => ts ? new Date(ts).getHours() * 60 + new Date(ts).getMinutes() : 0;
   const horaToMin = (h) => { if (!h) return null; const [hh, mm] = h.split(':').map(Number); return hh * 60 + mm; };
 
